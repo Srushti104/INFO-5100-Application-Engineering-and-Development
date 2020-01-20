@@ -34,7 +34,14 @@ public class Information {
     private String savingsAccNum;
     private String savingsRNum;
     private String savingsAccBaln;
-    private String AccType;
+    private String savingsAccType;
+    
+     // Checkings Information:
+    private String checkingsBankName;
+    private String checkingsAccNum;
+    private String checkingsRNum;
+    private String checkingsAccBaln;
+    private String checkingsAccType;
     
     // License Information:
     private String licenseNum;
@@ -62,13 +69,48 @@ public class Information {
         this.image = image;
     }
 
-    public String getAccType() {
-        return AccType;
+    
+
+    public String getCheckingsBankName() {
+        return checkingsBankName;
     }
 
-    public void setAccType(String AccType) {
-        this.AccType = AccType;
+    public void setCheckingsBankName(String checkingsBankName) {
+        this.checkingsBankName = checkingsBankName;
     }
+
+    public String getCheckingsAccNum() {
+        return checkingsAccNum;
+    }
+
+    public void setCheckingsAccNum(String checkingsAccNum) {
+        this.checkingsAccNum = checkingsAccNum;
+    }
+
+    public String getCheckingsRNum() {
+        return checkingsRNum;
+    }
+
+    public void setCheckingsRNum(String checkingsRNum) {
+        this.checkingsRNum = checkingsRNum;
+    }
+
+    public String getCheckingsAccBaln() {
+        return checkingsAccBaln;
+    }
+
+    public void setCheckingsAccBaln(String checkingsAccBaln) {
+        this.checkingsAccBaln = checkingsAccBaln;
+    }
+
+    public String getCheckingsAccType() {
+        return checkingsAccType;
+    }
+
+    public void setCheckingsAccType(String checkingsAccType) {
+        this.checkingsAccType = checkingsAccType;
+    }
+
 
     public void setfName(String fName) {
         this.fName = fName;
@@ -272,6 +314,13 @@ public class Information {
 
     public void setAlergy3(String alergy3) {
         this.alergy3 = alergy3;
+    }
+     public String getSavingsAccType() {
+        return savingsAccType;
+    }
+
+    public void setSavingsAccType(String savingsAccType) {
+        this.savingsAccType = savingsAccType;
     }
     
     
