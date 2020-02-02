@@ -253,7 +253,7 @@ public class AbnormalVitalJPanel extends javax.swing.JPanel {
             VitalSigns vs = (VitalSigns) abnormalTable.getValueAt(selectedRow, 0);
             vsh.deleteVital(vs);
             JOptionPane.showMessageDialog(null, "Vital Sign deleted.");
-            vsh.populateTable();
+            populateAbnormalTable();
         } else {
             JOptionPane.showMessageDialog(null, "Please select a row.");
         }
