@@ -66,30 +66,30 @@ public class Patient {
             scanner.nextLine();
 
             switch (choice) {
-                case 0:
-                    printInstructions();
-                    break;
                 case 1:
                     addVitalSign();
+                    printInstructions();
                     break;
                 case 2:
                     displayHistory();
+                    printInstructions();
                     break;
                 case 3:
                     isThisVitalSignNormal();
+                    printInstructions();
                     break;
                 case 4:
+                    System.out.println("\nThank you and Stay Healthy..!!");
                     quit = true;
                     break;
             }
-            printInstructions();
+           // printInstructions();
         }
 
     }
 
     public static void printInstructions() {
         System.out.println("\nSelect from below options: ");
-        System.out.println("\t 0 - To Print choice options.");
         System.out.println("\t 1 - To Add new record. ");
         System.out.println("\t 2 - To Display records. ");
         System.out.println("\t 3 - To Check the vital signs status. ");
@@ -111,7 +111,6 @@ public class Patient {
 
         int age = scanner.nextInt();
 
-       
         System.out.println("Enter Patients Respiratory Rate: ");
         double respiratoryRate = scanner.nextDouble();
 
@@ -162,10 +161,10 @@ public class Patient {
     }
 
     public void displayVitalSignsHistory() {
-        
+
         for (int i = 0; i < this.vitalSignsHistory.getVitalSignHistory().size(); i++) {
             VitalSign vs = this.vitalSignsHistory.getVitalSignHistory().get(i);
-            System.out.println("\nRecord No. " + (i + 1)+" :");
+            System.out.println("\nRecord No. " + (i + 1) + " :");
             System.out.println("Age: " + vs.getAge());
             System.out.println("Respiratory rate: " + vs.getRespiratoryRate());
             System.out.println("Heart rate: " + vs.getHeartRate());
@@ -218,9 +217,9 @@ public class Patient {
         }
 
         if (result) {
-            System.out.println("Vital sign is normal");
+            System.out.println("\nVital sign is normal");
         } else {
-            System.out.println("Vital sign is abnormal");
+            System.out.println("\nVital sign is abnormal");
         }
     }
 

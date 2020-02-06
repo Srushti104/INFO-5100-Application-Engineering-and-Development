@@ -12,8 +12,9 @@ import java.util.ArrayList;
  * @author srush
  */
 public class PatientList {
+
     private ArrayList<Patient> patientList;
-    
+
     public PatientList() {
         this.patientList = new ArrayList<Patient>();
     }
@@ -25,9 +26,9 @@ public class PatientList {
     public void setPatientList(ArrayList<Patient> patientList) {
         this.patientList = patientList;
     }
-        
-     public Patient getPatient(String fullName) {
-        for(Patient p : this.patientList) {
+
+    public Patient getPatient(String fullName) {
+        for (Patient p : this.patientList) {
             if (p.getFullName().toLowerCase().equals(fullName.toLowerCase())) {
                 return p;
             }
