@@ -5,16 +5,22 @@
  */
 package UserInterface;
 
+import Business.CustomerDirectory;
+import Business.SupplierDirectory;
 import Business.Users.Admin;
 import Business.Users.Customer;
 import Business.Users.Supplier;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
@@ -31,6 +37,7 @@ public class AdminCreateScreen extends javax.swing.JPanel {
      */
     private JPanel panelRight;
     private Admin admin;
+
     public AdminCreateScreen(JPanel panelRight, Admin admin) {
         initComponents();
         this.panelRight = panelRight;
@@ -46,6 +53,7 @@ public class AdminCreateScreen extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup = new javax.swing.ButtonGroup();
         btnCreate = new javax.swing.JButton();
         txtUser = new javax.swing.JTextField();
         txtPword = new javax.swing.JTextField();
@@ -70,6 +78,7 @@ public class AdminCreateScreen extends javax.swing.JPanel {
 
         jLabel3.setText("re-enter password :");
 
+        buttonGroup.add(radioCustomer);
         radioCustomer.setText("Customer");
         radioCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,6 +86,7 @@ public class AdminCreateScreen extends javax.swing.JPanel {
             }
         });
 
+        buttonGroup.add(radioSupplier);
         radioSupplier.setText("Supplier");
 
         btnBack.setText("< BACK");
@@ -144,24 +154,125 @@ public class AdminCreateScreen extends javax.swing.JPanel {
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         // TODO add your handling code here:
         
+        if (userNamePattern() == false) {
+            jLabel1.setForeground(Color.red);
+            txtUser.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(null, "Username should be in the format of xx_xx@xx.xx");
+            return;
+            
+        } else {
+            
+            jLabel1.setForeground(Color.BLACK);
+            txtUser.setBorder(BorderFactory.createLineBorder(Color.black));
+        }
+        if (passwordPattern() == false) {
+            jLabel2.setForeground(Color.red);
+            txtPword.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(null, "Password should be at least 6 digits and contain at least one upper case letter, "
+                                                    + "one lower case letter, one digit and one special character $, *, # or &.");
+            return;
+            
+        } else {
+            
+            jLabel2.setForeground(Color.BLACK);
+            txtPword.setBorder(BorderFactory.createLineBorder(Color.black));
+        }
+
+        if (rePasswordPattern() == false) {
+            jLabel3.setForeground(Color.red);
+            txtRePword.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(null, "Passwords do not match");
+            return;
+            
+        } else {
+
+            jLabel3.setForeground(Color.BLACK);
+            txtRePword.setBorder(BorderFactory.createLineBorder(Color.black));
+        }
+
+        if (radioSupplier.isSelected() == true) {
+            String newSupplierId = txtUser.getText();
+            String newSupPassword = txtPword.getText();
+            SupplierDirectory supDir = admin.getSuppDir();
+            Supplier s = supDir.addSupplier(newSupPassword, newSupplierId);
+
+//            CreateProduct createProdPanel = new CreateProduct(this.panelRight, s.getDirectory());
+//            this.panelRight.add("CreateProduct", createProdPanel);
+//            CardLayout layout = (CardLayout) this.panelRight.getLayout();
+//            layout.next(panelRight);
+        }
+
+        if (radioCustomer.isSelected() == true) {
+            String newCustomerId = txtUser.getText();
+            String newPassword = txtPword.getText();
+            DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+            Date date = new Date();
+            String dateEntered = dateFormat.format(date);
+
+            CustomerDirectory cusDir = admin.getCustDir();
+            Customer c = cusDir.addCustomer(newPassword, newCustomerId);
+            c.setDateCreated(dateEntered);
+            JOptionPane.showMessageDialog(null, "Customer added successfully");
+            txtUser.setText("");
+            txtPword.setText("");
+            txtRePword.setText("");
+
+        }
+
+
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void radioCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCustomerActionPerformed
         // TODO add your handling code here:
+        radioCustomer.setSelected(false);
     }//GEN-LAST:event_radioCustomerActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
 
-        CardLayout layout = (CardLayout)panelRight.getLayout();
+        CardLayout layout = (CardLayout) panelRight.getLayout();
         panelRight.remove(this);
+        layout.previous(panelRight);
+
+        Component[] comps = this.panelRight.getComponents();
+        for (Component comp : comps) {
+            if (comp instanceof AdminMainScreen) {
+                AdminMainScreen adminMainScreen = (AdminMainScreen) comp;
+                adminMainScreen.populateCust(admin.getCustDir());
+                adminMainScreen.populateSup(admin.getSuppDir());
+            }
+        }
         layout.previous(panelRight);
     }//GEN-LAST:event_btnBackActionPerformed
 
-    
-    
+    private boolean userNamePattern() {
+        Pattern p = Pattern.compile("^[a-zA-Z0-9]+_[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$");
+        Matcher m = p.matcher(txtUser.getText());
+        boolean b = m.matches();
+        return b;
+    }
+
+    private boolean passwordPattern() {
+        Pattern p = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$");
+        Matcher m = p.matcher(txtPword.getText());
+        boolean b = m.matches();
+        return b;
+    }
+
+    private boolean rePasswordPattern() {
+        String password = txtPword.getText();
+        String rePassword = txtRePword.getText();
+        if (password.equals(rePassword)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCreate;
+    private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -10,6 +10,7 @@ import Business.Users.Customer;
 import Business.Users.Supplier;
 import java.awt.CardLayout;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -24,6 +25,7 @@ public class LoginScreen extends javax.swing.JPanel {
      */
     List<User> list;
     JPanel panelRight;
+
     public LoginScreen(JPanel panelRight, List<User> list) {
         initComponents();
         this.list = list;
@@ -92,18 +94,37 @@ public class LoginScreen extends javax.swing.JPanel {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-        
+        User u = (User) comboUser.getSelectedItem();
+        String password = txtPword.getText();
+        boolean result = u.verify(password);
+        if (result == false) {
+            JOptionPane.showMessageDialog(null, "Password is wrong");
+            return;
+        } else {
+            CardLayout layout = (CardLayout) panelRight.getLayout();
+            panelRight.add(new SuccessScreen(u));
+            layout.next(panelRight);
+        }
+
     }//GEN-LAST:event_btnSubmitActionPerformed
 
-    
-    private void initialize(){
-        //text should either be "Supplier Login Screen" OR "Customer Login Screen"
-        //Based on the selection
-        txtTitle.setText("****** Login Screen");
+    private void initialize() {
+        DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
         comboUser.removeAllItems();
-        //only customer or suppliers should be listed based on the selection
+        for (User u : list) {
+            if ((u.getRole()).equals("CUSTOMER")) {
+                txtTitle.setText("Customer Login Screen");
+                dcbm.addElement(u);
+                comboUser.setModel(dcbm);
+            } else if ((u.getRole()).equals("SUPPLIER")) {
+                txtTitle.setText("Supplier Login Screen");
+                dcbm.addElement(u);
+                comboUser.setModel(dcbm);
+            }
+
+        }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;

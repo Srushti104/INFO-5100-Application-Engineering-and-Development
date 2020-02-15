@@ -6,6 +6,7 @@
 package UserInterface;
 
 import Business.Abstract.User;
+import Business.SupplierDirectory;
 import Business.Users.Admin;
 import java.awt.CardLayout;
 
@@ -20,9 +21,11 @@ public class MainFrame extends javax.swing.JFrame {
      */
     
     private Admin adminUser;
+    private SupplierDirectory supDir;
     public MainFrame() {
         initComponents();
         adminUser = new Admin();
+        supDir = new SupplierDirectory();
     }
 
     /**

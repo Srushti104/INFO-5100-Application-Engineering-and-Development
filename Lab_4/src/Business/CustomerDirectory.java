@@ -30,8 +30,10 @@ public class CustomerDirectory {
         this.customerList = supplierList;
     }
     
-      public void addCustomer(Customer cust) {
+      public Customer addCustomer(String password, String userName){
+        User cust=new Customer(password,userName);
         customerList.add(cust);
+        return (Customer) cust;
     }
     
 }

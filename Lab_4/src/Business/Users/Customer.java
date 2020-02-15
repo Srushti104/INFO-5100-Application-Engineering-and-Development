@@ -6,12 +6,44 @@
 package Business.Users;
 
 import Business.Abstract.User;
+import Business.ProductDirectory;
 import java.util.Date;
 
 /**
  *
  * @author AEDSpring2019
  */
-public class Customer {
-    
+public class Customer extends User implements Comparable<Customer> {
+
+    private String dateCreated;
+
+    public Customer(String password, String userName) {
+        super(password, userName, "CUSTOMER");
+
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    @Override
+    public int compareTo(Customer o) {
+        return o.getUserName().compareTo(this.getUserName());
+    }
+
+    @Override
+    public String toString() {
+        return getUserName(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean verify(String password) {
+        if (password.equals(getPassword())) {
+            return true;
+        }
+        return false;
+    }
 }

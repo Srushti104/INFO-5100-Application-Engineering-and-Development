@@ -6,6 +6,8 @@
 package UserInterface;
 
 import Business.Abstract.User;
+import Business.CustomerDirectory;
+import Business.SupplierDirectory;
 import Business.Users.Admin;
 import Business.Users.Customer;
 import Business.Users.Supplier;
@@ -24,11 +26,63 @@ public class AdminMainScreen extends javax.swing.JPanel {
      */
     private JPanel panelRight;
     private Admin admin;
+
     public AdminMainScreen(JPanel panelRight, Admin admin) {
         initComponents();
         this.panelRight = panelRight;
         this.admin = admin;
-        populate();
+        populateSup();
+        populateCust();
+    }
+
+    public void populateSup() {
+        DefaultTableModel dtm = (DefaultTableModel) tableSup.getModel();
+        dtm.setRowCount(0);
+        for (User u : admin.getSuppDir().getSupplierList()) {
+            Supplier s = (Supplier) u;
+            Object[] row = new Object[dtm.getColumnCount()];
+            row[0] = s;
+            row[1] = s.getDirectory().getProductList().size();
+            dtm.addRow(row);
+        }
+
+    }
+
+    public void populateCust() {
+        DefaultTableModel dtm = (DefaultTableModel) tableCust.getModel();
+        dtm.setRowCount(0);
+        for (User u : admin.getCustDir().getCustomerList()) {
+            Customer c = (Customer) u;
+            Object[] row = new Object[dtm.getColumnCount()];
+            row[0] = c;
+            row[1] = c.getDateCreated();
+            dtm.addRow(row);
+        }
+    }
+
+    public void populateCust(CustomerDirectory custDir) {
+        DefaultTableModel dtm = (DefaultTableModel) tableCust.getModel();
+        dtm.setRowCount(0);
+        for (User u : custDir.getCustomerList()) {
+            Customer c = (Customer) u;
+            Object[] row = new Object[dtm.getColumnCount()];
+            row[0] = c;
+            row[1] = c.getDateCreated();
+            dtm.addRow(row);
+        }
+    }
+
+    public void populateSup(SupplierDirectory supDir) {
+        DefaultTableModel dtm = (DefaultTableModel) tableSup.getModel();
+        dtm.setRowCount(0);
+        for (User u : supDir.getSupplierList()) {
+
+            Supplier s = (Supplier) u;
+            Object[] row = new Object[dtm.getColumnCount()];
+            row[0] = s;
+            row[1] = s.getDirectory().getProductList().size();
+            dtm.addRow(row);
+        }
     }
 
     /**
@@ -105,25 +159,12 @@ public class AdminMainScreen extends javax.swing.JPanel {
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         // TODO add your handling code here:
-        CardLayout layout = (CardLayout)panelRight.getLayout();
+        CardLayout layout = (CardLayout) panelRight.getLayout();
         panelRight.add(new AdminCreateScreen(panelRight, admin));
         layout.next(panelRight);
     }//GEN-LAST:event_btnCreateActionPerformed
 
 
-    public void populate(){
-        DefaultTableModel dtm = (DefaultTableModel)tableSup.getModel();
-        dtm.setRowCount(0);
-        for(User u : admin.getSuppDir().getSupplierList()){
-            Supplier s = (Supplier)u;
-            Object[] row = new Object[dtm.getColumnCount()];
-            row[0]=s;
-            row[1]=s.getDirectory().getProductList().size();
-            dtm.addRow(row);
-        }
-
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;
     private javax.swing.JScrollPane jScrollPane1;

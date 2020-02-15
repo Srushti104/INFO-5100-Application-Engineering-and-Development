@@ -30,8 +30,11 @@ public class SupplierDirectory {
         this.supplierList = supplierList;
     }
     
-    public void addSupplier(Supplier sup) {
+     public Supplier addSupplier(String password, String userName){
+        User sup=new Supplier(password,userName);
         supplierList.add(sup);
+        return (Supplier) sup;
+       
     }
     
     
