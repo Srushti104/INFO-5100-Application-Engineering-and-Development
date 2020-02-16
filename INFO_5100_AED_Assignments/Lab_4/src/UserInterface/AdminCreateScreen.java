@@ -190,18 +190,6 @@ public class AdminCreateScreen extends javax.swing.JPanel {
             txtRePword.setBorder(BorderFactory.createLineBorder(Color.black));
         }
 
-        if (radioSupplier.isSelected() == true) {
-            String newSupplierId = txtUser.getText();
-            String newSupPassword = txtPword.getText();
-            SupplierDirectory supDir = admin.getSuppDir();
-            supDir.addSupplier(newSupPassword, newSupplierId);
-            JOptionPane.showMessageDialog(null, "Supplier added successfully");
-            txtUser.setText("");
-            txtPword.setText("");
-            txtRePword.setText("");
-
-        }
-
         if (radioCustomer.isSelected() == true) {
             String newCustomerId = txtUser.getText();
             String newPassword = txtPword.getText();
@@ -213,6 +201,18 @@ public class AdminCreateScreen extends javax.swing.JPanel {
             Customer c = cusDir.addCustomer(newPassword, newCustomerId);
             c.setDateCreated(dateEntered);
             JOptionPane.showMessageDialog(null, "Customer added successfully");
+            txtUser.setText("");
+            txtPword.setText("");
+            txtRePword.setText("");
+
+        }
+
+        if (radioSupplier.isSelected() == true) {
+            String newSupplierId = txtUser.getText();
+            String newSupPassword = txtPword.getText();
+            SupplierDirectory supDir = admin.getSuppDir();
+            supDir.addSupplier(newSupPassword, newSupplierId);
+            JOptionPane.showMessageDialog(null, "Supplier added successfully");
             txtUser.setText("");
             txtPword.setText("");
             txtRePword.setText("");
