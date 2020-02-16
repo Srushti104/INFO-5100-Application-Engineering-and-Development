@@ -153,15 +153,15 @@ public class AdminCreateScreen extends javax.swing.JPanel {
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         // TODO add your handling code here:
-        
+
         if (userNamePattern() == false) {
             jLabel1.setForeground(Color.red);
             txtUser.setBorder(BorderFactory.createLineBorder(Color.RED));
             JOptionPane.showMessageDialog(null, "Username should be in the format of xx_xx@xx.xx");
             return;
-            
+
         } else {
-            
+
             jLabel1.setForeground(Color.BLACK);
             txtUser.setBorder(BorderFactory.createLineBorder(Color.black));
         }
@@ -169,11 +169,11 @@ public class AdminCreateScreen extends javax.swing.JPanel {
             jLabel2.setForeground(Color.red);
             txtPword.setBorder(BorderFactory.createLineBorder(Color.RED));
             JOptionPane.showMessageDialog(null, "Password should be at least 6 digits and contain at least one upper case letter, "
-                                                    + "one lower case letter, one digit and one special character $, *, # or &.");
+                    + "one lower case letter, one digit and one special character $, *, # or &.");
             return;
-            
+
         } else {
-            
+
             jLabel2.setForeground(Color.BLACK);
             txtPword.setBorder(BorderFactory.createLineBorder(Color.black));
         }
@@ -183,7 +183,7 @@ public class AdminCreateScreen extends javax.swing.JPanel {
             txtRePword.setBorder(BorderFactory.createLineBorder(Color.RED));
             JOptionPane.showMessageDialog(null, "Passwords do not match");
             return;
-            
+
         } else {
 
             jLabel3.setForeground(Color.BLACK);
@@ -194,12 +194,12 @@ public class AdminCreateScreen extends javax.swing.JPanel {
             String newSupplierId = txtUser.getText();
             String newSupPassword = txtPword.getText();
             SupplierDirectory supDir = admin.getSuppDir();
-            Supplier s = supDir.addSupplier(newSupPassword, newSupplierId);
+            supDir.addSupplier(newSupPassword, newSupplierId);
+            JOptionPane.showMessageDialog(null, "Supplier added successfully");
+            txtUser.setText("");
+            txtPword.setText("");
+            txtRePword.setText("");
 
-//            CreateProduct createProdPanel = new CreateProduct(this.panelRight, s.getDirectory());
-//            this.panelRight.add("CreateProduct", createProdPanel);
-//            CardLayout layout = (CardLayout) this.panelRight.getLayout();
-//            layout.next(panelRight);
         }
 
         if (radioCustomer.isSelected() == true) {
