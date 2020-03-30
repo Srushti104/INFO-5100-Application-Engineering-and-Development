@@ -5,8 +5,8 @@
  */
 package Business.Customer;
 
-import Business.UserAccount.UserAccount;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,26 +14,31 @@ import java.util.ArrayList;
  */
 public class CustomerDirectory {
     
-     private ArrayList<Customer> customerList;
+    private List<Customer> customerList;
 
-     public CustomerDirectory() {
+    public CustomerDirectory() {
         customerList = new ArrayList();
     }
 
-     public ArrayList<Customer> getCustomerList() {
+    public List<Customer> getCustomerList() {
         return customerList;
     }
-    
-     public Customer createCustomer(String name, String username){
-        Customer customer = new Customer();
-        customer.setUsername(username);
-        customer.setName(name);
-        customerList.add(customer);
-        return customer;
+
+    public void setCustomerList(List<Customer> customerList) {
+        this.customerList = customerList;
     }
-     
-     public void deleteCustomer(Customer customer){
-        customerList.remove(customer);
+    
+    public Customer createCustomer(String name){
+         Customer customer = new Customer(name);
+      if(!customerList.contains(customer)){
+          System.out.println("adding ------customer"+name);
+      customerList.add(customer);
+      }
+      System.out.println("using existing ------customer"+name);
+      return customer;
+    }
+    
+    public void deleteCustomer(Customer c) {
+        customerList.remove(c);
     }
 }
-
