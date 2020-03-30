@@ -4,12 +4,17 @@
  */
 package userinterface;
 
+import Business.Customer.Customer;
 import Business.EcoSystem;
 import Business.DB4OUtil.DB4OUtil;
+import Business.DeliveryMan.DeliveryMan;
+
 import Business.Organization;
 import Business.Restaurant.Restaurant;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -28,7 +33,7 @@ public class MainJFrame extends javax.swing.JFrame {
     public MainJFrame() {
         initComponents();
         system = dB4OUtil.retrieveSystem();
-        this.setSize(1680, 1050);
+        this.setSize(800, 800);
     }
 
     /**
@@ -57,12 +62,6 @@ public class MainJFrame extends javax.swing.JFrame {
         loginJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginJButtonActionPerformed(evt);
-            }
-        });
-
-        userNameJTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userNameJTextFieldActionPerformed(evt);
             }
         });
 
@@ -128,31 +127,71 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButtonActionPerformed
-       
-        // Get user name
+        // Get user name        
         String userName = userNameJTextField.getText();
-       
         // Get Password
         char[] passwordCharArray = passwordField.getPassword();
         String password = String.valueOf(passwordCharArray);
         
+        Restaurant restaurant = null;
+        Customer customer = null;
+        DeliveryMan dm = null;
+        //Step1: Check in the system admin user account directory if you have the user
         UserAccount userAccount=system.getUserAccountDirectory().authenticateUser(userName, password);
         
-        if(userAccount==null){
+        if(userAccount != null)
+        {
+            for(Restaurant r: system.getRestaurantDirectory().getRestaurantList())
+            {
+                if(r.getRestaurantAdminUsername().equals(userName))
+                {
+                    restaurant = r;
+                    break;
+                }
+            }
+            if(restaurant == null)
+            {
+                Iterator userCustIterator = system.getUserCust().entrySet().iterator(); 
+                while (userCustIterator.hasNext()) 
+                { 
+                    Map.Entry mapElement = (Map.Entry)userCustIterator.next(); 
+                    customer = ((Customer)mapElement.getValue()); 
+                    break;
+//                    userAccount  =((UserAccount)mapElement.getKey()); 
+                } 
+               
+                    System.out.println("total delivery man -->"+system.getDeliveryManDirectory().getDeliverymanList().size());
+                    for(DeliveryMan d: system.getDeliveryManDirectory().getDeliverymanList())
+                    {
+                        if(d.getUsername().equals(userName))
+                        {
+                            dm = d;
+                            break;
+                        }
+                    }
+       
+                
+            }
+        }
+        
+        System.out.println("Restaurant" + restaurant);
+        
+        if(userAccount==null)
+        {
             JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
         }
         else{
             CardLayout layout=(CardLayout)container.getLayout();
-            container.add("workArea",userAccount.getRole().createWorkArea(container, userAccount, system));
-            layout.next(container);            
+            container.add("workArea",userAccount.getRole().createWorkArea(container, userAccount, restaurant, customer, dm, system.getRestaurantDirectory(),system));
+            layout.next(container);
         }
         
         loginJButton.setEnabled(false);
         logoutJButton.setEnabled(true);
         userNameJTextField.setEnabled(false);
         passwordField.setEnabled(false);
-    
+       
     }//GEN-LAST:event_loginJButtonActionPerformed
 
     private void logoutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutJButtonActionPerformed
@@ -171,10 +210,6 @@ public class MainJFrame extends javax.swing.JFrame {
         crdLyt.next(container);
         dB4OUtil.storeSystem(system);
     }//GEN-LAST:event_logoutJButtonActionPerformed
-
-    private void userNameJTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameJTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userNameJTextFieldActionPerformed
 
     /**
      * @param args the command line arguments

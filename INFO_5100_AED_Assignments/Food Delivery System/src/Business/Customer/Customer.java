@@ -5,14 +5,46 @@
  */
 package Business.Customer;
 
+import Business.Order.Order;
+import Business.Restaurant.Menu;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author harold
  */
 public class Customer {
     
-    private String Username;
-    private String Name;
+    private String name;
+     private String Username;
+    private List<Order> custOrders;
+    
+    public Customer(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Order> getCustOrders() {
+        if(custOrders == null)
+        {
+            custOrders = new ArrayList();
+        }
+        return custOrders;
+    }
+
+    public void setCustOrders(List<Order> custOrders) {
+        this.custOrders = custOrders;
+    }
 
     public String getUsername() {
         return Username;
@@ -21,23 +53,12 @@ public class Customer {
     public void setUsername(String Username) {
         this.Username = Username;
     }
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String Name) {
-        this.Name = Name;
-    }
+    
+    
 
     @Override
     public String toString() {
-        return this.getUsername(); //To change body of generated methods, choose Tools | Templates.
+        return this.getName();
     }
-
-    public void deleteCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
+  
 }
